@@ -3,32 +3,612 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iMate - Simple Avatar</title>
-    <link rel="stylesheet" href="style.css">
+    <title>iMate - Interactive Avatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .avatar-container {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .avatar {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+        
+        .head {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: #ffcc80;
+            border-radius: 50%;
+            top: 25px;
+            left: 25px;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .eyes {
+            position: absolute;
+            top: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .eye {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pupil {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            top: 10px;
+            left: 10px;
+            transition: all 0.1s ease;
+        }
+        
+        .eyebrows {
+            position: absolute;
+            top: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .eyebrow {
+            width: 50px;
+            height: 10px;
+            background: #e67e22;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .mouth-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .mouth {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #e74c3c;
+            border-radius: 0 0 50px 50px;
+            transition: all 0.2s ease;
+        }
+        
+        /* Expressions */
+        .smile .mouth {
+            border-radius: 0 0 50px 50px;
+            height: 30px;
+        }
+        
+        .angry .eyebrow {
+            transform: rotate(-15deg);
+        }
+        
+        .angry .eyebrow.left {
+            transform: rotate(15deg);
+        }
+        
+        .angry .mouth {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            top: 10px;
+        }
+        
+        .laugh .mouth {
+            height: 60px;
+            border-radius: 50%;
+        }
+        
+        .surprised .eyebrow {
+            top: 30px;
+        }
+        
+        .surprised .mouth {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        
+        .sad .eyebrow {
+            transform: rotate(15deg);
+        }
+        
+        .sad .eyebrow.left {
+            transform: rotate(-15deg);
+        }
+        
+        .sad .mouth {
+            border-radius: 50px 50px 0 0;
+            height: 20px;
+            top: 20px;
+        }
+        
+        .interaction {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .speech-bubble {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            border: 10px solid transparent;
+            border-top-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(-50%);
+        }
+        
+        #responseText {
+            font-size: 1.4rem;
+            text-align: center;
+            min-height: 40px;
+        }
+        
+        .input-container {
+            margin-top: 20px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px 0;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .command-list {
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .command-list h3 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .commands {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        
+        .command {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .command:hover {
+            background: rgba(79, 172, 254, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .avatar {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .head {
+                width: 160px;
+                height: 160px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- Avatar Container -->
-        <div class="avatar">
-            <div class="head">
-                <div class="eye left"></div>
-                <div class="eye right"></div>
-                <div class="mouth"></div>
+        <div class="header">
+            <div class="logo">iMate</div>
+            <div class="subtitle">Your Interactive Avatar Companion</div>
+        </div>
+        
+        <div class="main-content">
+            <div class="avatar-container">
+                <div class="avatar">
+                    <div class="head" id="avatarHead">
+                        <div class="eyebrows">
+                            <div class="eyebrow left"></div>
+                            <div class="eyebrow right"></div>
+                        </div>
+                        <div class="eyes">
+                            <div class="eye">
+                                <div class="pupil" id="leftPupil"></div>
+                            </div>
+                            <div class="eye">
+                                <div class="pupil" id="rightPupil"></div>
+                            </div>
+                        </div>
+                        <div class="mouth-container">
+                            <div class="mouth" id="mouth"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="commands">
+                    <h3>Try these commands:</h3>
+                    <div class="command-list">
+                        <div class="commands">
+                            <div class="command" data-command="smile">Smile</div>
+                            <div class="command" data-command="laugh">Laugh</div>
+                            <div class="command" data-command="angry">Angry</div>
+                            <div class="command" data-command="surprised">Surprised</div>
+                            <div class="command" data-command="sad">Sad</div>
+                            <div class="command" data-command="neutral">Neutral</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="interaction">
+                <div class="speech-bubble">
+                    <p id="responseText">Hello! I'm iMate. Tell me something or ask me to show an expression!</p>
+                </div>
+                
+                <div class="input-container">
+                    <input type="text" id="userInput" placeholder="Type your message or command...">
+                    <button id="speakButton">Speak to Avatar</button>
+                    <button id="voiceCommand">Voice Command</button>
+                </div>
+                
+                <div class="instructions">
+                    <h3>How to use:</h3>
+                    <p>Type a message or use the buttons to interact with iMate. You can also say commands like:</p>
+                    <p>"Smile", "Laugh", "Angry", "Surprised", "Sad", or "Neutral"</p>
+                </div>
             </div>
         </div>
         
-        <!-- Speech Bubble -->
-        <div class="speech-bubble" id="responseBubble">
-            <p id="responseText">Hi! I'm iMate</p>
-        </div>
-        
-        <!-- Input Form -->
-        <div class="input-container">
-            <input type="text" id="userInput" placeholder="Type something...">
-            <button id="speakButton">Speak</button>
+        <div class="footer">
+            <p>iMate - Interactive Avatar Project | Created with HTML, CSS & JavaScript</p>
         </div>
     </div>
-
-    <script src="script.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userInput = document.getElementById('userInput');
+            const speakButton = document.getElementById('speakButton');
+            const voiceCommandButton = document.getElementById('voiceCommand');
+            const responseText = document.getElementById('responseText');
+            const avatarHead = document.getElementById('avatarHead');
+            const mouth = document.getElementById('mouth');
+            const leftPupil = document.getElementById('leftPupil');
+            const rightPupil = document.getElementById('rightPupil');
+            
+            // Remove any existing expression classes
+            function resetExpressions() {
+                const expressions = ['smile', 'laugh', 'angry', 'surprised', 'sad', 'neutral'];
+                expressions.forEach(expr => avatarHead.classList.remove(expr));
+            }
+            
+            // Set expression and respond
+            function setExpression(expression) {
+                resetExpressions();
+                
+                // Set the expression class
+                avatarHead.classList.add(expression);
+                
+                // Set response text
+                const responses = {
+                    smile: "😊 I'm smiling because you told me to!",
+                    laugh: "😂 Hahaha! That's funny!",
+                    angry: "😠 I'm angry now! Why did you make me angry?",
+                    surprised: "😮 Wow! You surprised me!",
+                    sad: "😢 Now I'm feeling sad...",
+                    neutral: "😐 Back to normal. What should we do next?"
+                };
+                
+                responseText.textContent = responses[expression] || "I'm ready for your next command!";
+                
+                // Speak the response
+                speak(responseText.textContent);
+            }
+            
+            // Initialize Speech Synthesis
+            const synth = window.speechSynthesis;
+            
+            function speak(text) {
+                if (synth.speaking) {
+                    synth.cancel();
+                }
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                
+                // Animate mouth while speaking
+                let speakInterval;
+                utterance.onstart = () => {
+                    let isOpen = false;
+                    speakInterval = setInterval(() => {
+                        if (isOpen) {
+                            mouth.style.height = "20px";
+                            mouth.style.borderRadius = "0 0 50px 50px";
+                        } else {
+                            mouth.style.height = "10px";
+                        }
+                        isOpen = !isOpen;
+                    }, 200);
+                };
+                
+                utterance.onend = () => {
+                    clearInterval(speakInterval);
+                    // Return to expression mouth shape
+                    const currentExpression = Array.from(avatarHead.classList)
+                        .find(cls => ['smile', 'laugh', 'angry', 'surprised', 'sad', 'neutral'].includes(cls));
+                    
+                    if (currentExpression) {
+                        // Reset to the expression after speaking
+                        setTimeout(() => setExpression(currentExpression), 300);
+                    } else {
+                        // Return to neutral if no expression
+                        mouth.style.height = "20px";
+                        mouth.style.borderRadius = "0 0 50px 50px";
+                    }
+                };
+                
+                synth.speak(utterance);
+            }
+            
+            // Process user input
+            function processInput(input) {
+                const text = input.toLowerCase().trim();
+                
+                if (!text) return;
+                
+                // Check for expression commands
+                if (text.includes('smile')) {
+                    setExpression('smile');
+                } else if (text.includes('laugh') || text.includes('haha')) {
+                    setExpression('laugh');
+                } else if (text.includes('angry') || text.includes('mad')) {
+                    setExpression('angry');
+                } else if (text.includes('surprised') || text.includes('wow')) {
+                    setExpression('surprised');
+                } else if (text.includes('sad') || text.includes('cry')) {
+                    setExpression('sad');
+                } else if (text.includes('neutral') || text.includes('normal')) {
+                    setExpression('neutral');
+                } else {
+                    // If no command, just repeat the input
+                    responseText.textContent = input;
+                    speak(input);
+                }
+                
+                // Clear input field
+                userInput.value = '';
+            }
+            
+            // Event Listeners
+            speakButton.addEventListener('click', () => {
+                processInput(userInput.value);
+            });
+            
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    processInput(userInput.value);
+                }
+            });
+            
+            // Voice command recognition
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.lang = 'en-US';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+                
+                voiceCommandButton.addEventListener('click', () => {
+                    recognition.start();
+                    voiceCommandButton.textContent = "Listening...";
+                    voiceCommandButton.style.background = "linear-gradient(to right, #ff9966, #ff5e62)";
+                });
+                
+                recognition.onresult = (event) => {
+                    const speechResult = event.results[0][0].transcript;
+                    userInput.value = speechResult;
+                    processInput(speechResult);
+                    voiceCommandButton.textContent = "Voice Command";
+                    voiceCommandButton.style.background = "linear-gradient(to right, #4facfe, #00f2fe)";
+                };
+                
+                recognition.onerror = () => {
+                    voiceCommandButton.textContent = "Voice Command";
+                    voiceCommandButton.style.background = "linear-gradient(to right, #4facfe, #00f2fe)";
+                    responseText.textContent = "Sorry, I didn't catch that. Could you try again?";
+                };
+                
+                recognition.onend = () => {
+                    voiceCommandButton.textContent = "Voice Command";
+                    voiceCommandButton.style.background = "linear-gradient(to right, #4facfe, #00f2fe)";
+                };
+            } else {
+                voiceCommandButton.style.display = "none";
+            }
+            
+            // Command buttons
+            document.querySelectorAll('.command').forEach(button => {
+                button.addEventListener('click', () => {
+                    const command = button.getAttribute('data-command');
+                    setExpression(command);
+                });
+            });
+            
+            // Eye tracking effect
+            document.addEventListener('mousemove', (e) => {
+                const avatarRect = avatarHead.getBoundingClientRect();
+                const avatarCenterX = avatarRect.left + avatarRect.width / 2;
+                const avatarCenterY = avatarRect.top + avatarRect.height / 2;
+                
+                const angle = Math.atan2(e.clientY - avatarCenterY, e.clientX - avatarCenterX);
+                const distance = Math.min(8, Math.hypot(e.clientX - avatarCenterX, e.clientY - avatarCenterY) / 50);
+                
+                const moveX = Math.cos(angle) * distance;
+                const moveY = Math.sin(angle) * distance;
+                
+                leftPupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                rightPupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+            
+            // Initial greeting
+            setTimeout(() => {
+                speak("Hello! I'm iMate. Tell me something or ask me to show an expression!");
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
