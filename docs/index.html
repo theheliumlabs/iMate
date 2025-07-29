@@ -3,396 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iMate - Simple Avatar</title>
+    <title>iMate - Interactive Avatar</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            padding: 20px;
-            color: #333;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        header {
-            background: #4a90e2;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-        
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .logo i {
-            font-size: 2.2rem;
-        }
-        
-        .subtitle {
-            margin-top: 5px;
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-        
-        .main-content {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 30px;
-            gap: 30px;
-        }
-        
-        .avatar-section {
-            flex: 1;
-            min-width: 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .avatar-container {
-            width: 280px;
-            height: 280px;
-            background: #f0f8ff;
-            border-radius: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            position: relative;
-        }
-        
-        .avatar {
-            width: 200px;
-            height: 200px;
-            position: relative;
-        }
-        
-        .head {
-            width: 180px;
-            height: 180px;
-            background: #ffcc80;
-            border-radius: 50%;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .eyes {
-            position: absolute;
-            top: 50px;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-        }
-        
-        .eye {
-            width: 30px;
-            height: 30px;
-            background: white;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .pupil {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: #333;
-            border-radius: 50%;
-            top: 7px;
-            left: 7px;
-            transition: all 0.1s ease;
-        }
-        
-        .eyebrows {
-            position: absolute;
-            top: 35px;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-        }
-        
-        .eyebrow {
-            width: 40px;
-            height: 8px;
-            background: #e67e22;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-        
-        .mouth-container {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 40px;
-            transition: all 0.3s ease;
-        }
-        
-        .mouth {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: #e74c3c;
-            border-radius: 0 0 40px 40px;
-            transition: all 0.2s ease;
-        }
-        
-        /* Expressions */
-        .smile .mouth {
-            border-radius: 0 0 40px 40px;
-            height: 25px;
-        }
-        
-        .angry .eyebrow {
-            transform: rotate(-10deg);
-        }
-        
-        .angry .eyebrow.left {
-            transform: rotate(10deg);
-        }
-        
-        .angry .mouth {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            top: 5px;
-        }
-        
-        .laugh .mouth {
-            height: 50px;
-            border-radius: 50%;
-        }
-        
-        .surprised .eyebrow {
-            top: 25px;
-        }
-        
-        .surprised .mouth {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-        
-        .sad .eyebrow {
-            transform: rotate(10deg);
-        }
-        
-        .sad .eyebrow.left {
-            transform: rotate(-10deg);
-        }
-        
-        .sad .mouth {
-            border-radius: 40px 40px 0 0;
-            height: 15px;
-            top: 15px;
-        }
-        
-        .expressions {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            width: 100%;
-            max-width: 300px;
-        }
-        
-        .expression-btn {
-            background: #f0f8ff;
-            border: 2px solid #4a90e2;
-            border-radius: 10px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .expression-btn i {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            color: #4a90e2;
-        }
-        
-        .expression-btn:hover {
-            background: #e1f0ff;
-            transform: translateY(-3px);
-        }
-        
-        .interaction-section {
-            flex: 1;
-            min-width: 300px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .speech-bubble {
-            background: #f8f9fa;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            border: 1px solid #e9ecef;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .speech-bubble:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            border: 10px solid transparent;
-            border-top-color: #f8f9fa;
-            transform: translateX(-50%);
-        }
-        
-        #responseText {
-            font-size: 1.2rem;
-            text-align: center;
-            color: #495057;
-        }
-        
-        .input-container {
-            margin-top: auto;
-        }
-        
-        input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ced4da;
-            border-radius: 12px;
-            background: white;
-            color: #495057;
-            font-size: 1rem;
-            outline: none;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus {
-            border-color: #4a90e2;
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
-        }
-        
-        input::placeholder {
-            color: #adb5bd;
-        }
-        
-        .buttons {
-            display: flex;
-            gap: 10px;
-        }
-        
-        button {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            background: #4a90e2;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        button:hover {
-            background: #3a7bc8;
-            transform: translateY(-2px);
-        }
-        
-        button:active {
-            transform: translateY(1px);
-        }
-        
-        button.secondary {
-            background: #6c757d;
-        }
-        
-        button.secondary:hover {
-            background: #5a6268;
-        }
-        
-        footer {
-            background: #f8f9fa;
-            padding: 15px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #6c757d;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .avatar-container {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .expressions {
-                max-width: 100%;
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="logo">
                 <i class="fas fa-robot"></i>
-                <span>iMate</span>
+                <h1>iMate</h1>
             </div>
-            <div class="subtitle">Your interactive avatar companion</div>
+            <p class="subtitle">Your interactive avatar companion</p>
         </header>
-        
+
         <div class="main-content">
             <div class="avatar-section">
                 <div class="avatar-container">
@@ -416,48 +40,48 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="expressions">
-                    <div class="expression-btn" data-expression="smile">
+                    <button class="expression-btn" data-expression="smile">
                         <i class="far fa-smile"></i>
                         <span>Smile</span>
-                    </div>
-                    <div class="expression-btn" data-expression="laugh">
+                    </button>
+                    <button class="expression-btn" data-expression="laugh">
                         <i class="far fa-laugh-squint"></i>
                         <span>Laugh</span>
-                    </div>
-                    <div class="expression-btn" data-expression="angry">
+                    </button>
+                    <button class="expression-btn" data-expression="angry">
                         <i class="far fa-angry"></i>
                         <span>Angry</span>
-                    </div>
-                    <div class="expression-btn" data-expression="surprised">
+                    </button>
+                    <button class="expression-btn" data-expression="surprised">
                         <i class="far fa-surprise"></i>
                         <span>Surprised</span>
-                    </div>
-                    <div class="expression-btn" data-expression="sad">
+                    </button>
+                    <button class="expression-btn" data-expression="sad">
                         <i class="far fa-sad-tear"></i>
                         <span>Sad</span>
-                    </div>
-                    <div class="expression-btn" data-expression="neutral">
+                    </button>
+                    <button class="expression-btn" data-expression="neutral">
                         <i class="far fa-meh"></i>
                         <span>Neutral</span>
-                    </div>
+                    </button>
                 </div>
             </div>
-            
+
             <div class="interaction-section">
                 <div class="speech-bubble">
-                    <p id="responseText">Hello! I'm iMate. You can ask me to show expressions or just chat with me!</p>
+                    <p id="responseText">Hello! I'm iMate. Say something to me!</p>
                 </div>
-                
+
                 <div class="input-container">
-                    <input type="text" id="userInput" placeholder="Type a message or command...">
+                    <input type="text" id="userInput" placeholder="Type your message...">
                     <div class="buttons">
-                        <button id="speakButton">
-                            <i class="fas fa-comment"></i>
+                        <button id="sendButton">
+                            <i class="fas fa-paper-plane"></i>
                             <span>Send</span>
                         </button>
-                        <button id="voiceButton" class="secondary">
+                        <button id="voiceButton">
                             <i class="fas fa-microphone"></i>
                             <span>Voice</span>
                         </button>
@@ -465,175 +89,12 @@
                 </div>
             </div>
         </div>
-        
+
         <footer>
-            <p>iMate Avatar Project | Designed for simplicity and future expansion</p>
+            <p>iMate - Interactive Avatar Project</p>
         </footer>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const userInput = document.getElementById('userInput');
-            const speakButton = document.getElementById('speakButton');
-            const voiceButton = document.getElementById('voiceButton');
-            const responseText = document.getElementById('responseText');
-            const avatarHead = document.getElementById('avatarHead');
-            const mouth = document.getElementById('mouth');
-            const leftPupil = document.getElementById('leftPupil');
-            const rightPupil = document.getElementById('rightPupil');
-            const expressionButtons = document.querySelectorAll('.expression-btn');
-            
-            // Remove any existing expression classes
-            function resetExpressions() {
-                const expressions = ['smile', 'laugh', 'angry', 'surprised', 'sad', 'neutral'];
-                expressions.forEach(expr => avatarHead.classList.remove(expr));
-            }
-            
-            // Set expression and respond
-            function setExpression(expression) {
-                resetExpressions();
-                
-                // Set the expression class
-                avatarHead.classList.add(expression);
-                
-                // Set response text
-                const responses = {
-                    smile: "😊 I'm smiling because you told me to!",
-                    laugh: "😂 Hahaha! That's funny!",
-                    angry: "😠 I'm angry now! Why did you make me angry?",
-                    surprised: "😮 Wow! You surprised me!",
-                    sad: "😢 Now I'm feeling sad...",
-                    neutral: "😐 Back to normal. What should we do next?"
-                };
-                
-                responseText.textContent = responses[expression] || "I'm ready for your next command!";
-                
-                // Speak the response
-                speak(responseText.textContent);
-            }
-            
-            // Initialize Speech Synthesis
-            const synth = window.speechSynthesis;
-            
-            function speak(text) {
-                if (synth.speaking) {
-                    synth.cancel();
-                }
-                
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.rate = 1.0;
-                utterance.pitch = 1.0;
-                utterance.volume = 1;
-                
-                // Animate mouth while speaking
-                let speakInterval;
-                utterance.onstart = () => {
-                    let isOpen = false;
-                    speakInterval = setInterval(() => {
-                        if (isOpen) {
-                            mouth.style.height = "20px";
-                            mouth.style.borderRadius = "0 0 40px 40px";
-                        } else {
-                            mouth.style.height = "10px";
-                        }
-                        isOpen = !isOpen;
-                    }, 200);
-                };
-                
-                utterance.onend = () => {
-                    clearInterval(speakInterval);
-                    // Return to expression mouth shape
-                    const currentExpression = Array.from(avatarHead.classList)
-                        .find(cls => ['smile', 'laugh', 'angry', 'surprised', 'sad', 'neutral'].includes(cls));
-                    
-                    if (currentExpression) {
-                        // Reset to the expression after speaking
-                        setTimeout(() => setExpression(currentExpression), 300);
-                    } else {
-                        // Return to neutral if no expression
-                        mouth.style.height = "20px";
-                        mouth.style.borderRadius = "0 0 40px 40px";
-                    }
-                };
-                
-                synth.speak(utterance);
-            }
-            
-            // Process user input
-            function processInput(input) {
-                const text = input.toLowerCase().trim();
-                
-                if (!text) return;
-                
-                // Check for expression commands
-                if (text.includes('smile')) {
-                    setExpression('smile');
-                } else if (text.includes('laugh') || text.includes('haha')) {
-                    setExpression('laugh');
-                } else if (text.includes('angry') || text.includes('mad')) {
-                    setExpression('angry');
-                } else if (text.includes('surprised') || text.includes('wow')) {
-                    setExpression('surprised');
-                } else if (text.includes('sad') || text.includes('cry')) {
-                    setExpression('sad');
-                } else if (text.includes('neutral') || text.includes('normal')) {
-                    setExpression('neutral');
-                } else {
-                    // If no command, just repeat the input
-                    responseText.textContent = input;
-                    speak(input);
-                }
-                
-                // Clear input field
-                userInput.value = '';
-            }
-            
-            // Event Listeners
-            speakButton.addEventListener('click', () => {
-                processInput(userInput.value);
-            });
-            
-            userInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    processInput(userInput.value);
-                }
-            });
-            
-            // Expression buttons
-            expressionButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const expression = button.getAttribute('data-expression');
-                    setExpression(expression);
-                });
-            });
-            
-            // Voice button - simplified for now
-            voiceButton.addEventListener('click', () => {
-                responseText.textContent = "Voice commands coming soon! For now, use the expression buttons or type commands.";
-                speak(responseText.textContent);
-            });
-            
-            // Eye tracking effect
-            document.addEventListener('mousemove', (e) => {
-                const avatarRect = avatarHead.getBoundingClientRect();
-                const avatarCenterX = avatarRect.left + avatarRect.width / 2;
-                const avatarCenterY = avatarRect.top + avatarRect.height / 2;
-                
-                const angle = Math.atan2(e.clientY - avatarCenterY, e.clientX - avatarCenterX);
-                const distance = Math.min(6, Math.hypot(e.clientX - avatarCenterX, e.clientY - avatarCenterY) / 50);
-                
-                const moveX = Math.cos(angle) * distance;
-                const moveY = Math.sin(angle) * distance;
-                
-                leftPupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                rightPupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-            
-            // Initial greeting
-            setTimeout(() => {
-                speak("Hello! I'm iMate. You can ask me to show expressions by clicking the buttons or typing commands like 'smile' or 'angry'.");
-            }, 1000);
-        });
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html>
