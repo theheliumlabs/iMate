@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iMate - Interactive Avatar</title>
+    <title>iMate - Simple Avatar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -18,130 +19,138 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: white;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
             padding: 20px;
-            overflow-x: hidden;
-        }
-        
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            color: #333;
         }
         
         .container {
-            max-width: 1000px;
             width: 100%;
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
+            max-width: 900px;
+            background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         
-        .header {
-            margin-bottom: 30px;
+        header {
+            background: #4a90e2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
         }
         
         .logo {
-            font-size: 4rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 2.2rem;
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            margin-top: 5px;
+            font-size: 1rem;
             opacity: 0.9;
-            margin-bottom: 20px;
         }
         
         .main-content {
             display: flex;
             flex-wrap: wrap;
+            padding: 30px;
             gap: 30px;
-            justify-content: center;
-            margin-bottom: 30px;
+        }
+        
+        .avatar-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .avatar-container {
-            flex: 1;
-            min-width: 300px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 280px;
+            height: 280px;
+            background: #f0f8ff;
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
         
         .avatar {
+            width: 200px;
+            height: 200px;
             position: relative;
-            width: 250px;
-            height: 250px;
-            margin: 0 auto;
-            margin-bottom: 30px;
         }
         
         .head {
-            position: absolute;
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             background: #ffcc80;
             border-radius: 50%;
-            top: 25px;
-            left: 25px;
-            z-index: 10;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
         
         .eyes {
             position: absolute;
-            top: 60px;
+            top: 50px;
             width: 100%;
             display: flex;
             justify-content: space-around;
         }
         
         .eye {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             background: white;
             border-radius: 50%;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
         
         .pupil {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             background: #333;
             border-radius: 50%;
-            top: 10px;
-            left: 10px;
+            top: 7px;
+            left: 7px;
             transition: all 0.1s ease;
         }
         
         .eyebrows {
             position: absolute;
-            top: 40px;
+            top: 35px;
             width: 100%;
             display: flex;
             justify-content: space-around;
         }
         
         .eyebrow {
-            width: 50px;
-            height: 10px;
+            width: 40px;
+            height: 8px;
             background: #e67e22;
-            border-radius: 5px;
+            border-radius: 4px;
             transition: all 0.3s ease;
         }
         
@@ -150,8 +159,8 @@
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 50px;
+            width: 80px;
+            height: 40px;
             transition: all 0.3s ease;
         }
         
@@ -160,79 +169,111 @@
             width: 100%;
             height: 100%;
             background: #e74c3c;
-            border-radius: 0 0 50px 50px;
+            border-radius: 0 0 40px 40px;
             transition: all 0.2s ease;
         }
         
         /* Expressions */
         .smile .mouth {
-            border-radius: 0 0 50px 50px;
-            height: 30px;
+            border-radius: 0 0 40px 40px;
+            height: 25px;
         }
         
         .angry .eyebrow {
-            transform: rotate(-15deg);
+            transform: rotate(-10deg);
         }
         
         .angry .eyebrow.left {
-            transform: rotate(15deg);
+            transform: rotate(10deg);
         }
         
         .angry .mouth {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            top: 10px;
+            top: 5px;
         }
         
         .laugh .mouth {
-            height: 60px;
-            border-radius: 50%;
-        }
-        
-        .surprised .eyebrow {
-            top: 30px;
-        }
-        
-        .surprised .mouth {
-            width: 50px;
             height: 50px;
             border-radius: 50%;
         }
         
+        .surprised .eyebrow {
+            top: 25px;
+        }
+        
+        .surprised .mouth {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        
         .sad .eyebrow {
-            transform: rotate(15deg);
+            transform: rotate(10deg);
         }
         
         .sad .eyebrow.left {
-            transform: rotate(-15deg);
+            transform: rotate(-10deg);
         }
         
         .sad .mouth {
-            border-radius: 50px 50px 0 0;
-            height: 20px;
-            top: 20px;
+            border-radius: 40px 40px 0 0;
+            height: 15px;
+            top: 15px;
         }
         
-        .interaction {
+        .expressions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .expression-btn {
+            background: #f0f8ff;
+            border: 2px solid #4a90e2;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .expression-btn i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: #4a90e2;
+        }
+        
+        .expression-btn:hover {
+            background: #e1f0ff;
+            transform: translateY(-3px);
+        }
+        
+        .interaction-section {
             flex: 1;
             min-width: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
         }
         
         .speech-bubble {
-            background: rgba(255, 255, 255, 0.15);
+            background: #f8f9fa;
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             min-height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            border: 1px solid #e9ecef;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
         
         .speech-bubble:after {
@@ -241,192 +282,206 @@
             bottom: -10px;
             left: 50%;
             border: 10px solid transparent;
-            border-top-color: rgba(255, 255, 255, 0.15);
+            border-top-color: #f8f9fa;
             transform: translateX(-50%);
         }
         
         #responseText {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             text-align: center;
-            min-height: 40px;
+            color: #495057;
         }
         
         .input-container {
-            margin-top: 20px;
+            margin-top: auto;
         }
         
         input {
             width: 100%;
             padding: 15px;
-            border: none;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            font-size: 1.1rem;
+            border: 2px solid #ced4da;
+            border-radius: 12px;
+            background: white;
+            color: #495057;
+            font-size: 1rem;
             outline: none;
             margin-bottom: 15px;
             transition: all 0.3s ease;
         }
         
         input:focus {
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
         }
         
         input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: #adb5bd;
         }
         
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 50px;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 5px 0;
-        }
-        
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .command-list {
-            margin-top: 30px;
-            text-align: left;
-        }
-        
-        .command-list h3 {
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .commands {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        .buttons {
+            display: flex;
             gap: 10px;
         }
         
-        .command {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #4a90e2;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
-        .command:hover {
-            background: rgba(79, 172, 254, 0.3);
-            transform: translateY(-3px);
+        button:hover {
+            background: #3a7bc8;
+            transform: translateY(-2px);
         }
         
-        .footer {
-            margin-top: 30px;
-            opacity: 0.7;
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        button.secondary {
+            background: #6c757d;
+        }
+        
+        button.secondary:hover {
+            background: #5a6268;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
             font-size: 0.9rem;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
         }
         
-        /* Responsive design */
         @media (max-width: 768px) {
-            .logo {
-                font-size: 3rem;
+            .main-content {
+                flex-direction: column;
+                align-items: center;
             }
             
-            .avatar {
-                width: 200px;
-                height: 200px;
+            .avatar-container {
+                width: 250px;
+                height: 250px;
             }
             
-            .head {
-                width: 160px;
-                height: 160px;
+            .expressions {
+                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="logo">iMate</div>
-            <div class="subtitle">Your Interactive Avatar Companion</div>
-        </div>
+        <header>
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <span>iMate</span>
+            </div>
+            <div class="subtitle">Your interactive avatar companion</div>
+        </header>
         
         <div class="main-content">
-            <div class="avatar-container">
-                <div class="avatar">
-                    <div class="head" id="avatarHead">
-                        <div class="eyebrows">
-                            <div class="eyebrow left"></div>
-                            <div class="eyebrow right"></div>
-                        </div>
-                        <div class="eyes">
-                            <div class="eye">
-                                <div class="pupil" id="leftPupil"></div>
+            <div class="avatar-section">
+                <div class="avatar-container">
+                    <div class="avatar">
+                        <div class="head" id="avatarHead">
+                            <div class="eyebrows">
+                                <div class="eyebrow left"></div>
+                                <div class="eyebrow right"></div>
                             </div>
-                            <div class="eye">
-                                <div class="pupil" id="rightPupil"></div>
+                            <div class="eyes">
+                                <div class="eye">
+                                    <div class="pupil" id="leftPupil"></div>
+                                </div>
+                                <div class="eye">
+                                    <div class="pupil" id="rightPupil"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mouth-container">
-                            <div class="mouth" id="mouth"></div>
+                            <div class="mouth-container">
+                                <div class="mouth" id="mouth"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="commands">
-                    <h3>Try these commands:</h3>
-                    <div class="command-list">
-                        <div class="commands">
-                            <div class="command" data-command="smile">Smile</div>
-                            <div class="command" data-command="laugh">Laugh</div>
-                            <div class="command" data-command="angry">Angry</div>
-                            <div class="command" data-command="surprised">Surprised</div>
-                            <div class="command" data-command="sad">Sad</div>
-                            <div class="command" data-command="neutral">Neutral</div>
-                        </div>
+                <div class="expressions">
+                    <div class="expression-btn" data-expression="smile">
+                        <i class="far fa-smile"></i>
+                        <span>Smile</span>
+                    </div>
+                    <div class="expression-btn" data-expression="laugh">
+                        <i class="far fa-laugh-squint"></i>
+                        <span>Laugh</span>
+                    </div>
+                    <div class="expression-btn" data-expression="angry">
+                        <i class="far fa-angry"></i>
+                        <span>Angry</span>
+                    </div>
+                    <div class="expression-btn" data-expression="surprised">
+                        <i class="far fa-surprise"></i>
+                        <span>Surprised</span>
+                    </div>
+                    <div class="expression-btn" data-expression="sad">
+                        <i class="far fa-sad-tear"></i>
+                        <span>Sad</span>
+                    </div>
+                    <div class="expression-btn" data-expression="neutral">
+                        <i class="far fa-meh"></i>
+                        <span>Neutral</span>
                     </div>
                 </div>
             </div>
             
-            <div class="interaction">
+            <div class="interaction-section">
                 <div class="speech-bubble">
-                    <p id="responseText">Hello! I'm iMate. Tell me something or ask me to show an expression!</p>
+                    <p id="responseText">Hello! I'm iMate. You can ask me to show expressions or just chat with me!</p>
                 </div>
                 
                 <div class="input-container">
-                    <input type="text" id="userInput" placeholder="Type your message or command...">
-                    <button id="speakButton">Speak to Avatar</button>
-                    <button id="voiceCommand">Voice Command</button>
-                </div>
-                
-                <div class="instructions">
-                    <h3>How to use:</h3>
-                    <p>Type a message or use the buttons to interact with iMate. You can also say commands like:</p>
-                    <p>"Smile", "Laugh", "Angry", "Surprised", "Sad", or "Neutral"</p>
+                    <input type="text" id="userInput" placeholder="Type a message or command...">
+                    <div class="buttons">
+                        <button id="speakButton">
+                            <i class="fas fa-comment"></i>
+                            <span>Send</span>
+                        </button>
+                        <button id="voiceButton" class="secondary">
+                            <i class="fas fa-microphone"></i>
+                            <span>Voice</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="footer">
-            <p>iMate - Interactive Avatar Project | Created with HTML, CSS & JavaScript</p>
-        </div>
+        <footer>
+            <p>iMate Avatar Project | Designed for simplicity and future expansion</p>
+        </footer>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const userInput = document.getElementById('userInput');
             const speakButton = document.getElementById('speakButton');
-            const voiceCommandButton = document.getElementById('voiceCommand');
+            const voiceButton = document.getElementById('voiceButton');
             const responseText = document.getElementById('responseText');
             const avatarHead = document.getElementById('avatarHead');
             const mouth = document.getElementById('mouth');
             const leftPupil = document.getElementById('leftPupil');
             const rightPupil = document.getElementById('rightPupil');
+            const expressionButtons = document.querySelectorAll('.expression-btn');
             
             // Remove any existing expression classes
             function resetExpressions() {
@@ -468,6 +523,7 @@
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.rate = 1.0;
                 utterance.pitch = 1.0;
+                utterance.volume = 1;
                 
                 // Animate mouth while speaking
                 let speakInterval;
@@ -476,7 +532,7 @@
                     speakInterval = setInterval(() => {
                         if (isOpen) {
                             mouth.style.height = "20px";
-                            mouth.style.borderRadius = "0 0 50px 50px";
+                            mouth.style.borderRadius = "0 0 40px 40px";
                         } else {
                             mouth.style.height = "10px";
                         }
@@ -496,7 +552,7 @@
                     } else {
                         // Return to neutral if no expression
                         mouth.style.height = "20px";
-                        mouth.style.borderRadius = "0 0 50px 50px";
+                        mouth.style.borderRadius = "0 0 40px 40px";
                     }
                 };
                 
@@ -543,49 +599,18 @@
                 }
             });
             
-            // Voice command recognition
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                const recognition = new SpeechRecognition();
-                recognition.continuous = false;
-                recognition.lang = 'en-US';
-                recognition.interimResults = false;
-                recognition.maxAlternatives = 1;
-                
-                voiceCommandButton.addEventListener('click', () => {
-                    recognition.start();
-                    voiceCommandButton.textContent = "Listening...";
-                    voiceCommandButton.style.background = "linear-gradient(to right, #ff9966, #ff5e62)";
-                });
-                
-                recognition.onresult = (event) => {
-                    const speechResult = event.results[0][0].transcript;
-                    userInput.value = speechResult;
-                    processInput(speechResult);
-                    voiceCommandButton.textContent = "Voice Command";
-                    voiceCommandButton.style.background = "linear-gradient(to right, #4facfe, #00f2fe)";
-                };
-                
-                recognition.onerror = () => {
-                    voiceCommandButton.textContent = "Voice Command";
-                    voiceCommandButton.style.background = "linear-gradient(to right, #4facfe, #00f2fe)";
-                    responseText.textContent = "Sorry, I didn't catch that. Could you try again?";
-                };
-                
-                recognition.onend = () => {
-                    voiceCommandButton.textContent = "Voice Command";
-                    voiceCommandButton.style.background = "linear-gradient(to right, #4facfe, #00f2fe)";
-                };
-            } else {
-                voiceCommandButton.style.display = "none";
-            }
-            
-            // Command buttons
-            document.querySelectorAll('.command').forEach(button => {
+            // Expression buttons
+            expressionButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const command = button.getAttribute('data-command');
-                    setExpression(command);
+                    const expression = button.getAttribute('data-expression');
+                    setExpression(expression);
                 });
+            });
+            
+            // Voice button - simplified for now
+            voiceButton.addEventListener('click', () => {
+                responseText.textContent = "Voice commands coming soon! For now, use the expression buttons or type commands.";
+                speak(responseText.textContent);
             });
             
             // Eye tracking effect
@@ -595,7 +620,7 @@
                 const avatarCenterY = avatarRect.top + avatarRect.height / 2;
                 
                 const angle = Math.atan2(e.clientY - avatarCenterY, e.clientX - avatarCenterX);
-                const distance = Math.min(8, Math.hypot(e.clientX - avatarCenterX, e.clientY - avatarCenterY) / 50);
+                const distance = Math.min(6, Math.hypot(e.clientX - avatarCenterX, e.clientY - avatarCenterY) / 50);
                 
                 const moveX = Math.cos(angle) * distance;
                 const moveY = Math.sin(angle) * distance;
@@ -606,7 +631,7 @@
             
             // Initial greeting
             setTimeout(() => {
-                speak("Hello! I'm iMate. Tell me something or ask me to show an expression!");
+                speak("Hello! I'm iMate. You can ask me to show expressions by clicking the buttons or typing commands like 'smile' or 'angry'.");
             }, 1000);
         });
     </script>
