@@ -3,46 +3,64 @@ const startBtn = document.getElementById("start-btn");
 const smileBtn = document.getElementById("smile-btn");
 const laughBtn = document.getElementById("laugh-btn");
 
-// Images
-const idleImg = "assets/idle.png";
+// Avatar image paths
+const idleImg = "assets/idle.png";                 // Neutral
+const talkingImgs = ["assets/idle.png", "assets/talking.png"]; // Two frames for mouth animation
 const smileImg = "assets/smile.png";
 const laughImg = "assets/laugh.png";
-const talkingImg = "assets/talking.gif";
+const laughTearsImg = "assets/laugh_tears.png";
 
-// Voice recognition
+// Voice recognition setup
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
-recognition.lang = 'en-US';
+recognition.lang = "en-US";
+recognition.interimResults = false;
 
-// Speech synthesis
+// Function to speak text
 function speak(text) {
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'en-US';
-  speechSynthesis.speak(utterance);
+  return new Promise((resolve) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+
+    let talkingInterval;
+    utterance.onstart = () => {
+      let frame = 0;
+      talkingInterval = setInterval(() => {
+        avatar.src = talkingImgs[frame % talkingImgs.length];
+        frame++;
+      }, 200); // change frame every 200ms
+    };
+
+    utterance.onend = () => {
+      clearInterval(talkingInterval);
+      avatar.src = idleImg;
+      resolve();
+    };
+
+    speechSynthesis.speak(utterance);
+  });
 }
 
+// 🎤 Speak button
 startBtn.addEventListener("click", () => {
   avatar.src = idleImg;
   recognition.start();
 });
 
-recognition.onresult = (event) => {
+// When recognition result comes
+recognition.onresult = async (event) => {
   const userText = event.results[0][0].transcript;
-  avatar.src = talkingImg;
-  speak(userText);
-
-  // Reset to idle after speaking
-  setTimeout(() => {
-    avatar.src = idleImg;
-  }, userText.length * 200);
+  await speak(userText);
 };
 
+// 😊 Smile button
 smileBtn.addEventListener("click", () => {
   avatar.src = smileImg;
   setTimeout(() => avatar.src = idleImg, 2000);
 });
 
+// 😂 Laugh button
 laughBtn.addEventListener("click", () => {
-  avatar.src = laughImg;
+  avatar.src = laughTearsImg;
   setTimeout(() => avatar.src = idleImg, 2000);
 });
