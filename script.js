@@ -3,20 +3,19 @@ const startBtn = document.getElementById("start-btn");
 const smileBtn = document.getElementById("smile-btn");
 const laughBtn = document.getElementById("laugh-btn");
 
-// Avatar image paths
-const idleImg = "assets/idle.png";                 // Neutral
-const talkingImgs = ["assets/idle.png", "assets/talking.png"]; // Two frames for mouth animation
+// Images
+const idleImg = "assets/idle.png";
+const talkingImgs = ["assets/idle.png", "assets/talking.png"];
 const smileImg = "assets/smile.png";
-const laughImg = "assets/laugh.png";
 const laughTearsImg = "assets/laugh_tears.png";
 
-// Voice recognition setup
+// Speech recognition
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.lang = "en-US";
 recognition.interimResults = false;
 
-// Function to speak text
+// Speak with mouth animation
 function speak(text) {
   return new Promise((resolve) => {
     const utterance = new SpeechSynthesisUtterance(text);
@@ -28,7 +27,7 @@ function speak(text) {
       talkingInterval = setInterval(() => {
         avatar.src = talkingImgs[frame % talkingImgs.length];
         frame++;
-      }, 200); // change frame every 200ms
+      }, 200);
     };
 
     utterance.onend = () => {
@@ -41,16 +40,28 @@ function speak(text) {
   });
 }
 
+// Call DeepSeek API through backend
+async function getAIResponse(userText) {
+  const response = await fetch("https://your-site.netlify.app/.netlify/functions/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt: userText })
+  });
+  const data = await response.json();
+  return data.reply;
+}
+
 // 🎤 Speak button
 startBtn.addEventListener("click", () => {
   avatar.src = idleImg;
   recognition.start();
 });
 
-// When recognition result comes
+// When recognition finishes
 recognition.onresult = async (event) => {
   const userText = event.results[0][0].transcript;
-  await speak(userText);
+  const aiReply = await getAIResponse(userText);
+  await speak(aiReply);
 };
 
 // 😊 Smile button
